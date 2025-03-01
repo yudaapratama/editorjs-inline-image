@@ -47,6 +47,7 @@ export default class InlineImage {
   }) {
     this.api = api;
     this.readOnly = readOnly;
+		this.config = config;
 
     this.ui = new Ui({
       data,
@@ -83,8 +84,9 @@ export default class InlineImage {
    */
   save() {
     const { caption } = this.ui.nodes;
-
-    this.data.caption = caption.innerHTML;
+		if(this.config.embed?.display) {
+			this.data.caption = caption.innerHTML;
+		}
 
     return this.data;
   }
