@@ -97,13 +97,16 @@ export default class Ui {
       onload: () => this.onImageLoad(),
       onerror: () => this.onImageLoadError(),
     });
-    const caption = make('div', [this.CSS.input, this.CSS.caption], {
-      contentEditable: !this.readOnly,
-      innerHTML: data.caption || '',
-    });
-    this.nodes.imageHolder = make('div', this.CSS.imageHolder);
 
-    caption.dataset.placeholder = 'Enter a caption';
+		if(this.config.embed?.display) {
+			const caption = make('div', [this.CSS.input, this.CSS.caption], {
+				contentEditable: !this.readOnly,
+				innerHTML: data.caption || '',
+			});
+			caption.dataset.placeholder = 'Enter a caption';
+		}
+
+    this.nodes.imageHolder = make('div', this.CSS.imageHolder);
 
     if (data.url) {
       wrapper.appendChild(loader);
@@ -118,7 +121,9 @@ export default class Ui {
     this.nodes.wrapper = wrapper;
     this.nodes.loader = loader;
     this.nodes.image = image;
-    this.nodes.caption = caption;
+    if(this.config.embed?.display) {
+    	this.nodes.caption = caption;
+		}
 
     this.applySettings(data);
 
@@ -152,7 +157,9 @@ export default class Ui {
   onImageLoad() {
     this.nodes.imageHolder.prepend(this.nodes.image);
     this.nodes.wrapper.appendChild(this.nodes.imageHolder);
-    this.nodes.wrapper.appendChild(this.nodes.caption);
+    if(this.config.embed?.display) {
+    	this.nodes.wrapper.appendChild(this.nodes.caption);
+		}
     this.nodes.loader.remove();
   }
 
